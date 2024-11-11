@@ -1,6 +1,7 @@
 package org.example.deelmath.service;
 
 import org.example.deelmath.dto.GrupoDTO;
+import org.example.deelmath.dto.GrupoNombreDTO;
 import org.example.deelmath.dto.UsuarioDTO;
 import org.example.deelmath.modelos.*;
 import org.example.deelmath.repository.IBalanceRepository;
@@ -147,7 +148,7 @@ public class GrupoService {
         return getGrupoDTO(grupo);
     }
 
-    public List<GrupoDTO> listarGrupos(Integer idUsuario) {
+    public List<GrupoDTO> listarGruposTC(Integer idUsuario) {
 
         if (!usuarioRepository.existsById(idUsuario)) {
             throw new RuntimeException("No existe un usuario con este ID.");
@@ -158,6 +159,23 @@ public class GrupoService {
         List<GrupoDTO> listaGDTOs = new ArrayList<>();
         for (Grupo g : usuario.getGrupos()) {
             GrupoDTO gDTO = getGrupoDTO(g);
+            listaGDTOs.add(gDTO);
+        }
+
+        return listaGDTOs;
+    }
+
+    public List<GrupoNombreDTO> listarGrupos(Integer idUsuario) {
+
+        if (!usuarioRepository.existsById(idUsuario)) {
+            throw new RuntimeException("No existe un usuario con este ID.");
+        }
+
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+
+        List<GrupoNombreDTO> listaGDTOs = new ArrayList<>();
+        for (Grupo g : usuario.getGrupos()) {
+            GrupoNombreDTO gDTO = getGrupoNombreDTO(g);
             listaGDTOs.add(gDTO);
         }
 
@@ -195,6 +213,14 @@ public class GrupoService {
             }
             dtonuevo.setBalances(balancesDTO);
         }
+
+        return dtonuevo;
+    }
+
+    private static GrupoNombreDTO getGrupoNombreDTO(Grupo g) {
+        GrupoNombreDTO dtonuevo = new GrupoNombreDTO();
+
+        dtonuevo.setNombre(g.getNombre());
 
         return dtonuevo;
     }

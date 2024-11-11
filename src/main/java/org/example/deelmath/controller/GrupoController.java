@@ -1,6 +1,7 @@
 package org.example.deelmath.controller;
 
 import org.example.deelmath.dto.GrupoDTO;
+import org.example.deelmath.dto.GrupoNombreDTO;
 import org.example.deelmath.dto.UsuarioDTO;
 import org.example.deelmath.service.GrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class GrupoController {
     }
 
     @GetMapping("/grupo/{idUsuario}")
-    public List<GrupoDTO> listarGrupos(@PathVariable Integer idUsuario){
+    public List<GrupoNombreDTO> listarGrupos(@PathVariable Integer idUsuario){
         return grupoService.listarGrupos(idUsuario);
     }
 }
