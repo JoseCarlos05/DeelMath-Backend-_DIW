@@ -1,6 +1,7 @@
 package org.example.deelmath.service;
 
 import org.example.deelmath.dto.UsuarioDTO;
+import org.example.deelmath.dto.UsuarioInicioDTO;
 import org.example.deelmath.modelos.*;
 import org.example.deelmath.repository.IUsuarioRepository;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,11 @@ public class UsuarioService {
 
     public UsuarioService(IUsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
+    }
+
+    public UsuarioInicioDTO buscarUsuario(String email,String contrasena) {
+        Usuario usuario = usuarioRepository.findByEmailAndContrasena(email, contrasena);
+        return getUsuarioInicioDTO(usuario);
     }
 
     public static UsuarioDTO getUsuarioDTO(Usuario u) {
@@ -58,6 +64,17 @@ public class UsuarioService {
             }
             dtonuevo.setBalance(balancesDTO);
         }
+
+        return dtonuevo;
+    }
+
+    public static UsuarioInicioDTO getUsuarioInicioDTO(Usuario u) {
+        UsuarioInicioDTO dtonuevo = new UsuarioInicioDTO();
+
+        dtonuevo.setId(u.getId());
+        dtonuevo.setNombre(u.getNombre());
+        dtonuevo.setEmail(u.getEmail());
+        dtonuevo.setContrasena(u.getContrasena());
 
         return dtonuevo;
     }
