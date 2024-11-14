@@ -13,5 +13,6 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GrupoNombreDTO {
+    private Integer id;
     private String nombre;
 }

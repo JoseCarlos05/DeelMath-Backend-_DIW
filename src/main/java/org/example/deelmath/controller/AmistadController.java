@@ -1,6 +1,7 @@
 package org.example.deelmath.controller;
 
 import org.example.deelmath.dto.UsuarioDTO;
+import org.example.deelmath.dto.UsuarioInicioDTO;
 import org.example.deelmath.service.AmistadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,7 @@ public class AmistadController {
     private AmistadService amistadService;
 
     @GetMapping("/amigos/{idUsuario}")
-    public List<UsuarioDTO> listarAmigos(@PathVariable Integer idUsuario){
+    public List<UsuarioInicioDTO> listarAmigos(@PathVariable Integer idUsuario){
         return amistadService.listarAmigos(idUsuario);
     }
 }

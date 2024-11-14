@@ -220,6 +220,7 @@ public class GrupoService {
     private static GrupoNombreDTO getGrupoNombreDTO(Grupo g) {
         GrupoNombreDTO dtonuevo = new GrupoNombreDTO();
 
+        dtonuevo.setId(g.getId());
         dtonuevo.setNombre(g.getNombre());
 
         return dtonuevo;
