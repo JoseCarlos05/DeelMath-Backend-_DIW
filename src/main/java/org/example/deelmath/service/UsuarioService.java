@@ -18,7 +18,12 @@ public class UsuarioService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public UsuarioInicioDTO buscarUsuario(String email,String contrasena) {
+    public UsuarioInicioDTO buscarUsuarioID(Integer id) {
+        Usuario usuario = usuarioRepository.findById(id).get();
+        return getUsuarioInicioDTO(usuario);
+    }
+
+    public UsuarioInicioDTO buscarUsuarioEC(String email,String contrasena) {
         Usuario usuario = usuarioRepository.findByEmailAndContrasena(email, contrasena);
         return getUsuarioInicioDTO(usuario);
     }

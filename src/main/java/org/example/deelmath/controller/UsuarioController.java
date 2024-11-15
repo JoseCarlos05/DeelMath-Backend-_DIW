@@ -17,8 +17,13 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @GetMapping("/usuario/{id}")
+    public UsuarioInicioDTO buscarUsuarioID(@PathVariable Integer id) {
+        return usuarioService.buscarUsuarioID(id);
+    }
+
     @GetMapping("/usuario/{email}/{contrasena}")
-    public UsuarioInicioDTO buscarUsuario(@PathVariable String email, @PathVariable String contrasena) {
-        return usuarioService.buscarUsuario(email, contrasena);
+    public UsuarioInicioDTO buscarUsuarioEC(@PathVariable String email, @PathVariable String contrasena) {
+        return usuarioService.buscarUsuarioEC(email, contrasena);
     }
 }
