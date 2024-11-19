@@ -73,6 +73,11 @@ public class GrupoService {
             grupo.setBalances(balances);
         }
 
+        if (grupoDTO.getCreador() != null) {
+            Usuario usuario = usuarioRepository.findById(grupoDTO.getCreador()).get();
+            grupo.setCreador(usuario);
+        }
+
         Grupo g = grupoRepository.save(grupo);
         return getGrupoDTO(g);
 
@@ -214,6 +219,10 @@ public class GrupoService {
             dtonuevo.setBalances(balancesDTO);
         }
 
+        if (g.getCreador() != null) {
+            dtonuevo.setCreador(g.getCreador().getId());
+        }
+
         return dtonuevo;
     }
 
@@ -222,6 +231,10 @@ public class GrupoService {
 
         dtonuevo.setId(g.getId());
         dtonuevo.setNombre(g.getNombre());
+
+        if (g.getCreador() != null) {
+            dtonuevo.setCreador(g.getCreador().getId());
+        }
 
         return dtonuevo;
     }

@@ -61,7 +61,7 @@ public class GastoService {
                 balance.setUsuario(u);
                 balance.setGrupo(grupo);
                 if (u.getId().equals(usuario.getId())) {
-                    balance.setBalance(gasto.getCoste());
+                    balance.setBalance(gasto.getCoste() - deuda);
                 } else {
                     balance.setBalance(-deuda);
                 }
@@ -73,7 +73,7 @@ public class GastoService {
             for (Usuario u : grupo.getUsuarios()) {
                 balance = balanceRepository.findByUsuarioAndGrupo(u, grupo);
                 if (u.getId().equals(usuario.getId())) {
-                    balance.setBalance(balance.getBalance() + gasto.getCoste());
+                    balance.setBalance(balance.getBalance() + gasto.getCoste() - deuda);
                 } else {
                     balance.setBalance(balance.getBalance() - deuda);
                 }

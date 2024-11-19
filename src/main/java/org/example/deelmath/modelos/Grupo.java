@@ -47,4 +47,8 @@ public class Grupo implements Serializable {
     @ToString.Exclude
     @JsonManagedReference
     private Set<Usuario> usuarios = new HashSet<>(0);
+
+    @ManyToOne
+    @JoinColumn(name = "creador", nullable = false)
+    private Usuario creador;
 }

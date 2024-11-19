@@ -19,4 +19,5 @@ public class GrupoDTO {
     private Set<Integer> usuarios;
     private Set<Integer> gastos;
     private Set<Integer> balances;
+    private Integer creador;
 }

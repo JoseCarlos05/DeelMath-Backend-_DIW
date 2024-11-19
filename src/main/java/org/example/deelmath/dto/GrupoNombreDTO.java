@@ -15,4 +15,5 @@ import java.util.Set;
 public class GrupoNombreDTO {
     private Integer id;
     private String nombre;
+    private Integer creador;
 }

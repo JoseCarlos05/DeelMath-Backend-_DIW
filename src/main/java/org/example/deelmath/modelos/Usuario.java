@@ -61,4 +61,9 @@ public class Usuario implements Serializable {
     @ToString.Exclude
     private Set<Balance> balances = new HashSet<>(0);
 
+    @OneToMany(mappedBy = "creador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Set<Grupo> gruposAdmin = new HashSet<>(0);
+
 }
