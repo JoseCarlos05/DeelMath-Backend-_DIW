@@ -26,11 +26,8 @@ public class BalanceService {
 
     public List<BalanceDTO> verBalances(Integer idGrupo) {
 
-        if (!grupoRepository.existsById(idGrupo)) {
-            throw new RuntimeException("No existe un grupo con este ID.");
-        }
-
-        Grupo grupo = grupoRepository.findById(idGrupo).get();
+        Grupo grupo = grupoRepository.findById(idGrupo)
+                .orElseThrow(() -> new RuntimeException("No existe un grupo con este ID."));
 
         List<BalanceDTO> balancesDTOs = new ArrayList<>();
         for (Balance balance : grupo.getBalances()) {

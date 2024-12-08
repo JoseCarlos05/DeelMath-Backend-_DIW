@@ -33,35 +33,39 @@ public class GastoService {
         }
 
         Gasto gasto = new Gasto();
-
         gasto.setTitulo(gastoDTO.getTitulo());
         gasto.setCoste(gastoDTO.getCoste());
         gasto.setFecha(gastoDTO.getFecha());
+
         if (gastoDTO.getCategoria() == null || !EnumSet.allOf(Categoría.class).contains(gastoDTO.getCategoria())) {
             throw new IllegalArgumentException("Categoría no válida");
         }
         gasto.setCategoria(gastoDTO.getCategoria());
 
         if (gastoDTO.getId_grupo() != null) {
-            gasto.setGrupo(grupoRepository.findById(gastoDTO.getId_grupo()).get());
+            Grupo grupo = grupoRepository.findById(gastoDTO.getId_grupo())
+                    .orElseThrow(() -> new IllegalArgumentException("Grupo no encontrado"));
+            gasto.setGrupo(grupo);
         }
 
         if (gastoDTO.getId_usuario() != null) {
-            gasto.setUsuario(usuarioRepository.findById(gastoDTO.getId_usuario()).get());
+            Usuario usuario = usuarioRepository.findById(gastoDTO.getId_usuario())
+                    .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+            gasto.setUsuario(usuario);
         }
 
-        if (!grupoRepository.findById(gastoDTO.getId_grupo()).get().getUsuarios().contains(usuarioRepository.findById(gastoDTO.getId_usuario()).get())) {
+        if (!gasto.getGrupo().getUsuarios().contains(gasto.getUsuario())) {
             throw new IllegalArgumentException("El usuario no pertenece al grupo especificado.");
         }
 
         Gasto g = gastoRepository.save(gasto);
 
-        Usuario usuario = usuarioRepository.findById(gastoDTO.getId_usuario()).get();
-        Grupo grupo = grupoRepository.findById(gastoDTO.getId_grupo()).get();
+        Usuario usuario = gasto.getUsuario();
+        Grupo grupo = gasto.getGrupo();
         Balance balance = balanceRepository.findByUsuarioAndGrupo(usuario, grupo);
 
-        double deuda = gastoDTO.getCoste()/grupo.getUsuarios().size();
-        
+        double deuda = gastoDTO.getCoste() / grupo.getUsuarios().size();
+
         if (balance == null) {
 
             for (Usuario u : grupo.getUsuarios()) {
@@ -75,7 +79,6 @@ public class GastoService {
                 }
                 balanceRepository.save(balance);
             }
-
         } else {
 
             for (Usuario u : grupo.getUsuarios()) {
@@ -87,20 +90,16 @@ public class GastoService {
                 }
                 balanceRepository.save(balance);
             }
-
         }
-
 
         return getGastoDTO(g);
     }
 
+
     public List<GastoDTO> verGastos(Integer idGrupo) {
 
-        if (!grupoRepository.existsById(idGrupo)) {
-            throw new RuntimeException("No existe un grupo con este ID.");
-        }
-
-        Grupo grupo = grupoRepository.findById(idGrupo).get();
+        Grupo grupo = grupoRepository.findById(idGrupo)
+                .orElseThrow(() -> new RuntimeException("No existe un grupo con este ID."));
 
         List<GastoDTO> gastoDTOs = new ArrayList<>();
         for (Gasto gasto : grupo.getGastos()) {

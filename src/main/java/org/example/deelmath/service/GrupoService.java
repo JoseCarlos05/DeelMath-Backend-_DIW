@@ -89,15 +89,11 @@ public class GrupoService {
 
     public GrupoDTO anyadirParticipantesGrupo(Integer idGrupo, Integer idUsuario) {
 
-        if (!grupoRepository.existsById(idGrupo)) {
-            throw new RuntimeException("No existe un grupo con este ID.");
-        }
-        if (!usuarioRepository.existsById(idUsuario)) {
-            throw new RuntimeException("No existe un usuario con este ID.");
-        }
+        Grupo grupo = grupoRepository.findById(idGrupo)
+                .orElseThrow(() -> new RuntimeException("No existe un grupo con este ID."));
 
-        Grupo grupo = grupoRepository.findById(idGrupo).get();
-        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("No existe un usuario con este ID."));
 
         if (!grupo.getUsuarios().contains(usuario)) {
 
@@ -115,15 +111,12 @@ public class GrupoService {
 
     public List<UsuarioDTO> verParticipantesGrupo(Integer idGrupo) {
 
-        if (!grupoRepository.existsById(idGrupo)) {
-            throw new RuntimeException("No existe un grupo con este ID.");
-        }
-
-        Grupo grupo = grupoRepository.findById(idGrupo).get();
+        Grupo grupo = grupoRepository.findById(idGrupo)
+                .orElseThrow(() -> new RuntimeException("No existe un grupo con este ID."));
 
         List<UsuarioDTO> listaUDTOs = new ArrayList<>();
         for (Usuario u : grupo.getUsuarios()) {
-            UsuarioDTO uDTO = usuarioService.getUsuarioDTO(u);
+            UsuarioDTO uDTO = UsuarioService.getUsuarioDTO(u);
             listaUDTOs.add(uDTO);
         }
 
@@ -133,15 +126,11 @@ public class GrupoService {
 
     public GrupoDTO eliminarParticipantesGrupo(Integer idGrupo, Integer idUsuario) {
 
-        if (!grupoRepository.existsById(idGrupo)) {
-            throw new RuntimeException("No existe un grupo con este ID.");
-        }
-        if (!usuarioRepository.existsById(idUsuario)) {
-            throw new RuntimeException("No existe un usuario con este ID.");
-        }
+        Grupo grupo = grupoRepository.findById(idGrupo)
+                .orElseThrow(() -> new RuntimeException("No existe un grupo con este ID."));
 
-        Grupo grupo = grupoRepository.findById(idGrupo).get();
-        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("No existe un usuario con este ID."));
 
         if (grupo.getUsuarios().contains(usuario)) {
 
@@ -175,11 +164,8 @@ public class GrupoService {
 
     public List<GrupoNombreDTO> listarGrupos(Integer idUsuario) {
 
-        if (!usuarioRepository.existsById(idUsuario)) {
-            throw new RuntimeException("No existe un usuario con este ID.");
-        }
-
-        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("No existe un usuario con este ID."));
 
         List<GrupoNombreDTO> listaGDTOs = new ArrayList<>();
         for (Grupo g : usuario.getGrupos()) {
