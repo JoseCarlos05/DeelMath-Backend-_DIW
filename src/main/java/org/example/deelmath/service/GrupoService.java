@@ -10,10 +10,7 @@ import org.example.deelmath.repository.IGrupoRepository;
 import org.example.deelmath.repository.IUsuarioRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class GrupoService {
@@ -32,7 +29,7 @@ public class GrupoService {
         this.usuarioService = usuarioService;
     }
 
-    public GrupoDTO crearGrupo(GrupoDTO grupoDTO) {
+    public GrupoDTO crearGrupo(GrupoDTO grupoDTO) throws Exception {
 
         Grupo grupo = null;
 
@@ -45,6 +42,9 @@ public class GrupoService {
         }
 
         grupo.setNombre(grupoDTO.getNombre());
+        if (grupoDTO.getMoneda() == null || !EnumSet.allOf(Moneda.class).contains(grupoDTO.getMoneda())) {
+            throw new IllegalArgumentException("Moneda no válida");
+        }
         grupo.setMoneda(grupoDTO.getMoneda());
 
         if (grupoDTO.getUsuarios() != null) {
@@ -76,6 +76,9 @@ public class GrupoService {
         if (grupoDTO.getCreador() != null) {
             Usuario usuario = usuarioRepository.findById(grupoDTO.getCreador()).get();
             grupo.setCreador(usuario);
+            if (!grupo.getUsuarios().contains(grupo.getCreador())) {
+                throw new Exception("El usuario creador no está en el grupo");
+            }
         }
 
         Grupo g = grupoRepository.save(grupo);

@@ -17,7 +17,7 @@ public class GrupoController {
     private GrupoService grupoService;
 
     @PostMapping("/grupo/nuevo")
-    public GrupoDTO crearGrupo(@RequestBody GrupoDTO grupoDTO) {
+    public GrupoDTO crearGrupo(@RequestBody GrupoDTO grupoDTO) throws Exception {
         return grupoService.crearGrupo(grupoDTO);
     }
 

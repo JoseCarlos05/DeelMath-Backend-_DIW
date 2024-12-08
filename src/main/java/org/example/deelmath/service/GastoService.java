@@ -2,10 +2,7 @@ package org.example.deelmath.service;
 
 import org.example.deelmath.dto.GastoDTO;
 import org.example.deelmath.dto.GrupoDTO;
-import org.example.deelmath.modelos.Balance;
-import org.example.deelmath.modelos.Gasto;
-import org.example.deelmath.modelos.Grupo;
-import org.example.deelmath.modelos.Usuario;
+import org.example.deelmath.modelos.*;
 import org.example.deelmath.repository.IBalanceRepository;
 import org.example.deelmath.repository.IGastoRepository;
 import org.example.deelmath.repository.IGrupoRepository;
@@ -31,11 +28,18 @@ public class GastoService {
 
     public GastoDTO anyadirGasto(GastoDTO gastoDTO) {
 
+        if (gastoDTO.getCoste() <= 0) {
+            throw new IllegalArgumentException("El coste debe ser mayor a 0.");
+        }
+
         Gasto gasto = new Gasto();
 
         gasto.setTitulo(gastoDTO.getTitulo());
         gasto.setCoste(gastoDTO.getCoste());
         gasto.setFecha(gastoDTO.getFecha());
+        if (gastoDTO.getCategoria() == null || !EnumSet.allOf(Categoría.class).contains(gastoDTO.getCategoria())) {
+            throw new IllegalArgumentException("Categoría no válida");
+        }
         gasto.setCategoria(gastoDTO.getCategoria());
 
         if (gastoDTO.getId_grupo() != null) {
@@ -44,6 +48,10 @@ public class GastoService {
 
         if (gastoDTO.getId_usuario() != null) {
             gasto.setUsuario(usuarioRepository.findById(gastoDTO.getId_usuario()).get());
+        }
+
+        if (!grupoRepository.findById(gastoDTO.getId_grupo()).get().getUsuarios().contains(usuarioRepository.findById(gastoDTO.getId_usuario()).get())) {
+            throw new IllegalArgumentException("El usuario no pertenece al grupo especificado.");
         }
 
         Gasto g = gastoRepository.save(gasto);
@@ -103,7 +111,7 @@ public class GastoService {
         return gastoDTOs;
     }
 
-    private static GastoDTO getGastoDTO(Gasto g) {
+    public static GastoDTO getGastoDTO(Gasto g) {
         GastoDTO dtonuevo = new GastoDTO();
 
         dtonuevo.setTitulo(g.getTitulo());
