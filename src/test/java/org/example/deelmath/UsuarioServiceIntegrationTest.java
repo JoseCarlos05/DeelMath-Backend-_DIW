@@ -28,7 +28,7 @@ public class UsuarioServiceIntegrationTest {
     private UsuarioService usuarioService;
 
     @Test
-    @DisplayName("Test 3 --> Buscar un usuario por un correo y contraseña")
+    @DisplayName("Test --> Buscar un usuario por un correo y contraseña")
     @Tag("Usuario")
     public void testBuscarUsuarioECPositivo() {
 
